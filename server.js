@@ -20,10 +20,39 @@ const db = mysql.createConnection(
   },
   console.log("Connected to the election database.")
 );
+// Create Query for Read All Operation
+// db.query("SELECT * FROM candidates", (err, rows) => {
+//   console.log(rows);
+// });
 
-db.query("SELECT * FROM candidates", (err, rows) => {
-  console.log(rows);
-});
+// Create Query for Read Operation
+// db.query('SELECT * FROM candidates WHERE id=1', (err, row) => {
+//   if (err) {
+//     console.log(err);
+//   }
+//   console.log(row);
+// });
+
+// // Create Query for Delete Operation (using Prepared Statment)
+// db.query("DELETE FROM candidates WHERE id=?", 1, (err, result) => {
+//   if (err) {
+//     console.log(err);
+//   }
+//   console.log(result);
+// });
+// Create a candidate
+// const sql = `INSERT INTO candidates (id, first_name, last_name, industry_connected)
+//               VALUE (?,?,?,?)`;
+// const params = [1, 'Ronald','Firbank', 1];
+
+// db.query(sql, params, (err,result)=>{
+//   if (err){
+//     console.log(err);
+//   }
+//   console.log(result);
+  
+// })
+
 
 // Default response for any other request (Not Found)
 app.use((req, res) => {

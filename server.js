@@ -1,5 +1,6 @@
 const mysql = require("mysql2");
 const express = require("express");
+const inputCheck = require("./utils/inputCheck");
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -76,19 +77,34 @@ app.delete("/api/candidate/:id", (req, res) => {
     }
   });
 });
+// Create a candidate.
+app.post("/api/candidate", ({ body }, res) => {
+  const errors = inputCheck(
+    body,
+    "first_name",
+    "last_name",
+    "industry_connected"
+  );
+  if (errors) {
+    res.status(400).json({ error: errors });
+    return;
+  }
+  // Create a new candidate and insert into the database.
+  const sql = `INSERT INTO candidates (first_name, last_name, industry_connected)
+              VALUE (?,?,?)`;
+  const params = [body.first_name, body.last_name, body.industry_connected];
 
-// Create a new candidate and insert into the database.
-// const sql = `INSERT INTO candidates (id, first_name, last_name, industry_connected)
-//               VALUE (?,?,?,?)`;
-// const params = [1, 'Ronald','Firbank', 1];
-
-// db.query(sql, params, (err,result)=>{
-//   if (err){
-//     console.log(err);
-//   }
-//   console.log(result);
-
-// })
+  db.query(sql, params, (err, result) => {
+    if (err) {
+      createServer.status(400).json({ error: err.message });
+      return;
+    }
+    res.json({
+      message: "success",
+      data: body,
+    });
+  });
+});
 
 // Default response for any other request (Not Found)
 app.use((req, res) => {
